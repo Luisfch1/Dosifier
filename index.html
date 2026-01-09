@@ -1,0 +1,331 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Mezclas de Concreto v0.01</title>
+  <link rel="manifest" href="./manifest.webmanifest">
+  <meta name="theme-color" content="#0b1220" />
+  <style>
+    :root{
+      --bg:#0b1220; --card:#101a30; --muted:#9fb0d0; --text:#e8eefc; --line:#203257;
+      --accent:#96282d; --good:#3ddc97; --warn:#ffcc66;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Arial;
+         background:linear-gradient(180deg,var(--bg),#070b14); color:var(--text);}
+    a{color:#b8c9ff}
+    .wrap{max-width:980px;margin:0 auto;padding:18px}
+    .top{display:flex;gap:14px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+    .brand{display:flex;gap:12px;align-items:center}
+    .logo{width:38px;height:38px;border-radius:12px;background:var(--card);display:grid;place-items:center;border:1px solid var(--line)}
+    .logo span{font-weight:800;letter-spacing:.5px}
+    .pill{font-size:12px;color:var(--muted);border:1px solid var(--line);padding:6px 10px;border-radius:999px;background:rgba(16,26,48,.55)}
+    .grid{display:grid;grid-template-columns:1.1fr .9fr;gap:14px;margin-top:14px}
+    @media (max-width:900px){.grid{grid-template-columns:1fr}}
+    .card{background:rgba(16,26,48,.65);border:1px solid var(--line);border-radius:18px;padding:14px}
+    h1{font-size:18px;margin:0}
+    h2{font-size:14px;margin:0 0 10px 0;color:#cfe0ff}
+    p,li{color:var(--muted);line-height:1.35}
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    @media (max-width:520px){.row{grid-template-columns:1fr}}
+    label{font-size:12px;color:#cfe0ff;display:block;margin:10px 0 6px}
+    select,input{width:100%;padding:10px 10px;border-radius:12px;border:1px solid var(--line);background:#0c1426;color:var(--text);outline:none}
+    input[type="number"]{appearance:textfield}
+    .btn{cursor:pointer;border:none;border-radius:12px;padding:11px 12px;background:var(--accent);color:white;font-weight:700;width:100%}
+    .btn:active{transform:translateY(1px)}
+    .small{font-size:12px}
+    .kpi{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+    @media (max-width:720px){.kpi{grid-template-columns:1fr}}
+    .k{border:1px solid var(--line);background:rgba(12,20,38,.7);border-radius:14px;padding:10px}
+    .k .t{font-size:12px;color:var(--muted)}
+    .k .v{font-size:18px;font-weight:800;margin-top:4px}
+    .badge{display:inline-flex;gap:8px;align-items:center;font-size:12px;padding:5px 10px;border-radius:999px;border:1px solid var(--line);background:rgba(12,20,38,.6);color:var(--muted)}
+    .dot{width:8px;height:8px;border-radius:50%}
+    .dot.warn{background:var(--warn)}
+    details{margin-top:10px}
+    summary{cursor:pointer;color:#cfe0ff}
+    .foot{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between;margin-top:12px}
+    .muted{color:var(--muted)}
+    .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"><span>MC</span></div>
+        <div>
+          <h1>Mezclas de Concreto <span class="pill">v0.01</span></h1>
+          <div class="small muted">Por <b>1 bulto</b> de cemento (50 kg). Arena/Grava en <b>baldes</b> medidos.</div>
+        </div>
+      </div>
+      <span class="badge"><span class="dot warn"></span>Guía referencial (no reemplaza diseño de mezcla)</span>
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <h2>1) Configuración</h2>
+
+        <div class="row">
+          <div>
+            <label for="psi">Resistencia</label>
+            <select id="psi"></select>
+          </div>
+          <div>
+            <label for="shape">Recipiente</label>
+            <select id="shape">
+              <option value="frustum">Balde (cono truncado)</option>
+              <option value="cylinder">Caneca (cilindro)</option>
+            </select>
+          </div>
+        </div>
+
+        <div id="dimsFrustum">
+          <div class="row">
+            <div>
+              <label for="d1">Diámetro mayor (cm)</label>
+              <input id="d1" type="number" min="1" step="0.1" value="32">
+            </div>
+            <div>
+              <label for="d2">Diámetro menor (cm)</label>
+              <input id="d2" type="number" min="1" step="0.1" value="26">
+            </div>
+          </div>
+          <label for="h">Altura útil (cm)</label>
+          <input id="h" type="number" min="1" step="0.1" value="28">
+        </div>
+
+        <div id="dimsCylinder" style="display:none">
+          <div class="row">
+            <div>
+              <label for="dc">Diámetro (cm)</label>
+              <input id="dc" type="number" min="1" step="0.1" value="30">
+            </div>
+            <div>
+              <label for="hc">Altura útil (cm)</label>
+              <input id="hc" type="number" min="1" step="0.1" value="33">
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div>
+            <label for="bagKg">Peso bulto cemento (kg)</label>
+            <input id="bagKg" type="number" min="1" step="0.1" value="50">
+          </div>
+          <div>
+            <label for="rounding">Redondeo (baldes)</label>
+            <select id="rounding">
+              <option value="0.25" selected>0.25 (¼ balde)</option>
+              <option value="0.5">0.50 (½ balde)</option>
+              <option value="1">1.00 (entero)</option>
+            </select>
+          </div>
+        </div>
+
+        <button class="btn" id="calcBtn">Calcular dosificación</button>
+
+        <details>
+          <summary>Notas importantes (léelas una vez)</summary>
+          <ul>
+            <li>Esta app usa una <b>tabla de dosificaciones</b> de Cementos Argos (referencial), <b>no</b> un diseño de mezcla. La calidad de agregados y el control del agua cambian el resultado.</li>
+            <li>Para obras estructurales o críticas: se recomienda <b>diseño de mezcla y ensayos</b> con tus materiales.</li>
+            <li>El exceso de agua baja la resistencia. Mide el agua en litros o en recipiente graduado.</li>
+          </ul>
+          <div class="small muted">Fuente: <a href="https://colombia.argos.co/autoconstructores/aprende-a-dosificar-el-concreto-para-tus-proyectos-de-construccion-o-remodelacion/" target="_blank" rel="noopener">Cementos Argos</a> (ver tabla).</div>
+        </details>
+      </div>
+
+      <div class="card">
+        <h2>2) Resultado (por 1 bulto)</h2>
+
+        <div class="kpi">
+          <div class="k">
+            <div class="t">Arena</div>
+            <div class="v" id="outSand">—</div>
+            <div class="t small muted" id="outSand2"></div>
+          </div>
+          <div class="k">
+            <div class="t">Grava</div>
+            <div class="v" id="outGravel">—</div>
+            <div class="t small muted" id="outGravel2"></div>
+          </div>
+          <div class="k">
+            <div class="t">Agua</div>
+            <div class="v" id="outWater">—</div>
+            <div class="t small muted" id="outWater2"></div>
+          </div>
+        </div>
+
+        <div style="margin-top:12px;border-top:1px solid var(--line);padding-top:12px">
+          <div class="small muted" id="meta">—</div>
+          <div class="foot">
+            <div class="small muted">Recipiente: <span class="mono" id="bucketVol">—</span></div>
+            <div class="small muted">Fuente: <a href="https://colombia.argos.co/autoconstructores/aprende-a-dosificar-el-concreto-para-tus-proyectos-de-construccion-o-remodelacion/" target="_blank" rel="noopener">Argos</a></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:14px">
+      <h2>3) Para probar en celular (tipo Logi)</h2>
+      <ol>
+        <li>Sube esta carpeta a un hosting (Cloudflare Pages, Netlify, GitHub Pages, etc.).</li>
+        <li>Abre el enlace en Chrome/Android y usa <b>“Agregar a pantalla de inicio”</b>.</li>
+        <li>En iPhone: abre en Safari → compartir → <b>“Add to Home Screen”</b>.</li>
+      </ol>
+      <div class="small muted">En v0.02 (si quieres) metemos modo offline/caché con service worker.</div>
+    </div>
+  </div>
+
+<script>
+const DATA_URL = "./mezclas_argos_v0.01.json";
+
+function ceilToStep(x, step){
+  if (!isFinite(x)) return NaN;
+  return Math.ceil(x / step) * step;
+}
+function fmt(x, dec=2){
+  if (!isFinite(x)) return "—";
+  return x.toFixed(dec);
+}
+function loadState(){
+  try{ return JSON.parse(localStorage.getItem("mc_state")||"{}"); }catch(e){ return {}; }
+}
+function saveState(state){
+  try{ localStorage.setItem("mc_state", JSON.stringify(state)); }catch(e){}
+}
+
+function frustumVolumeM3(d1_cm, d2_cm, h_cm){
+  const d1 = d1_cm/100, d2 = d2_cm/100, h = h_cm/100;
+  return (Math.PI * h / 12) * (d1*d1 + d1*d2 + d2*d2);
+}
+function cylinderVolumeM3(d_cm, h_cm){
+  const d = d_cm/100, h = h_cm/100;
+  return Math.PI * (d*d/4) * h;
+}
+
+let MIXES = [];
+
+async function init(){
+  const res = await fetch(DATA_URL, {cache:"no-store"});
+  const j = await res.json();
+  MIXES = j.mixes;
+
+  const psiSel = document.getElementById("psi");
+  psiSel.innerHTML = "";
+  for (const m of MIXES){
+    const opt = document.createElement("option");
+    const tag = (m.is_estimated ? " (estimado)" : (m.psi===3500 ? " (≈ Argos 3555)" : ""));
+    opt.value = m.psi;
+    opt.textContent = `${m.psi} psi (${m.mpa} MPa)${tag}`;
+    psiSel.appendChild(opt);
+  }
+
+  const st = loadState();
+  if (st.psi) psiSel.value = st.psi;
+  if (st.shape) document.getElementById("shape").value = st.shape;
+
+  ["d1","d2","h","dc","hc","bagKg","rounding"].forEach(id=>{
+    if (st[id] !== undefined) document.getElementById(id).value = st[id];
+  });
+
+  syncDimsUI();
+  document.getElementById("shape").addEventListener("change", ()=>{ syncDimsUI(); persist(); });
+  document.getElementById("psi").addEventListener("change", persist);
+  ["d1","d2","h","dc","hc","bagKg","rounding"].forEach(id=>{
+    document.getElementById(id).addEventListener("input", persist);
+  });
+
+  document.getElementById("calcBtn").addEventListener("click", calc);
+
+  calc();
+}
+
+function syncDimsUI(){
+  const shape = document.getElementById("shape").value;
+  document.getElementById("dimsFrustum").style.display = (shape==="frustum") ? "" : "none";
+  document.getElementById("dimsCylinder").style.display = (shape==="cylinder") ? "" : "none";
+}
+
+function persist(){
+  const state = {
+    psi: document.getElementById("psi").value,
+    shape: document.getElementById("shape").value,
+    d1: document.getElementById("d1").value,
+    d2: document.getElementById("d2").value,
+    h: document.getElementById("h").value,
+    dc: document.getElementById("dc").value,
+    hc: document.getElementById("hc").value,
+    bagKg: document.getElementById("bagKg").value,
+    rounding: document.getElementById("rounding").value
+  };
+  saveState(state);
+}
+
+function calc(){
+  const psi = Number(document.getElementById("psi").value);
+  const mix = MIXES.find(m => Number(m.psi) === psi);
+  if (!mix) return;
+
+  const shape = document.getElementById("shape").value;
+
+  let Vb_m3 = NaN;
+  if (shape === "frustum"){
+    const d1 = Number(document.getElementById("d1").value);
+    const d2 = Number(document.getElementById("d2").value);
+    const h  = Number(document.getElementById("h").value);
+    Vb_m3 = frustumVolumeM3(d1,d2,h);
+  } else {
+    const d  = Number(document.getElementById("dc").value);
+    const h  = Number(document.getElementById("hc").value);
+    Vb_m3 = cylinderVolumeM3(d,h);
+  }
+
+  const Vb_L = Vb_m3 * 1000;
+
+  const bagKg = Number(document.getElementById("bagKg").value || 50);
+  const step = Number(document.getElementById("rounding").value || 0.25);
+
+  const k = bagKg / mix.cement_kg_m3;
+
+  const sand_m3 = mix.sand_m3_m3 * k;
+  const gravel_m3 = mix.gravel_m3_m3 * k;
+  const water_L = mix.water_L_m3 * k;
+
+  const sand_b = sand_m3 / Vb_m3;
+  const gravel_b = gravel_m3 / Vb_m3;
+  const water_b = water_L / Vb_L;
+
+  const sand_b_r = ceilToStep(sand_b, step);
+  const gravel_b_r = ceilToStep(gravel_b, step);
+  const water_b_r = ceilToStep(water_b, step);
+
+  document.getElementById("outSand").textContent = `${fmt(sand_b_r,2)} baldes`;
+  document.getElementById("outSand2").textContent = `Exacto: ${fmt(sand_b,2)} • Arena: ${fmt(sand_m3*1000,1)} L`;
+
+  document.getElementById("outGravel").textContent = `${fmt(gravel_b_r,2)} baldes`;
+  document.getElementById("outGravel2").textContent = `Exacto: ${fmt(gravel_b,2)} • Grava: ${fmt(gravel_m3*1000,1)} L`;
+
+  document.getElementById("outWater").textContent = `${fmt(water_L,1)} L`;
+  document.getElementById("outWater2").textContent = `≈ ${fmt(water_b_r,2)} baldes (exacto ${fmt(water_b,2)})`;
+
+  const meta = [
+    `${mix.psi} psi (${mix.mpa} MPa) • Cemento: ${mix.cement_kg_m3} kg/m³`,
+    `${mix.is_estimated ? "Estimado: " : ""}${mix.basis || ""}`
+  ].filter(Boolean).join(" — ");
+  document.getElementById("meta").textContent = meta;
+
+  document.getElementById("bucketVol").textContent = `${fmt(Vb_L,1)} L (${fmt(Vb_m3,4)} m³)`;
+
+  persist();
+}
+
+init().catch(err=>{
+  console.error(err);
+  document.getElementById("meta").textContent = "Error cargando datos. Ver consola.";
+});
+</script>
+</body>
+</html>

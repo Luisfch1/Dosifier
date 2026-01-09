@@ -1,0 +1,66 @@
+{
+  "app": {
+    "name": "Mezclas de Concreto",
+    "version": "0.01",
+    "bag_cement_kg_default": 50,
+    "source": {
+      "name": "Cementos Argos",
+      "page_url": "https://colombia.argos.co/autoconstructores/aprende-a-dosificar-el-concreto-para-tus-proyectos-de-construccion-o-remodelacion/",
+      "table_image_url": "https://colombia.argos.co/wp-content/uploads/2025/01/tabla-dosificacion-Aprende-a-dosificar-el-concreto-para-tus-proyectos-de-construccion-o-remodelacion.png",
+      "note": "Tabla de dosificaciones (referencial), no un diseño de mezcla."
+    }
+  },
+  "mixes": [
+    {
+      "psi": 2000,
+      "mpa": 14,
+      "cement_kg_m3": 230,
+      "sand_m3_m3": 0.55,
+      "gravel_m3_m3": 0.92,
+      "water_L_m3": 148,
+      "basis": "Directo tabla Argos",
+      "is_estimated": false
+    },
+    {
+      "psi": 2500,
+      "mpa": 17,
+      "cement_kg_m3": 293.3,
+      "sand_m3_m3": 0.6633,
+      "gravel_m3_m3": 0.7767,
+      "water_L_m3": 158.0,
+      "basis": "Interpolación lineal entre 2400 y 2700 psi (tabla Argos)",
+      "is_estimated": true
+    },
+    {
+      "psi": 3000,
+      "mpa": 20,
+      "cement_kg_m3": 320,
+      "sand_m3_m3": 0.52,
+      "gravel_m3_m3": 0.9,
+      "water_L_m3": 170,
+      "basis": "Directo tabla Argos",
+      "is_estimated": false
+    },
+    {
+      "psi": 3500,
+      "mpa": 24,
+      "cement_kg_m3": 380,
+      "sand_m3_m3": 0.6,
+      "gravel_m3_m3": 0.76,
+      "water_L_m3": 180,
+      "basis": "Equivalente práctico: fila 3555 psi de Argos",
+      "is_estimated": false,
+      "note": "Usa la fila Argos 3555 psi como equivalente."
+    },
+    {
+      "psi": 4000,
+      "mpa": 27,
+      "cement_kg_m3": 420,
+      "sand_m3_m3": 0.67,
+      "gravel_m3_m3": 0.67,
+      "water_L_m3": 190,
+      "basis": "Directo tabla Argos",
+      "is_estimated": false
+    }
+  ]
+}
