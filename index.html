@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <title>Mezclas de Concreto v0.02</title>
+  <title>Mezclas de Concreto v0.03</title>
 
   <link rel="manifest" href="./manifest.webmanifest">
   <link rel="icon" href="./favicon.png">
@@ -101,7 +101,7 @@
           padding:8px 10px;border-radius:999px;font-size:12px;font-weight:800}
     .tab.active{background:rgba(var(--accent-rgb),.18); color:var(--text); border-color:rgba(var(--accent-rgb),.45)}
 
-    .kpi{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+    .kpi{display:grid;grid-template-columns:repeat(auto-fit, minmax(180px, 1fr));gap:10px}
     @media (max-width:720px){.kpi{grid-template-columns:1fr}}
     .k{border:1px solid var(--border);background:rgba(0,0,0,.14);border-radius:14px;padding:10px}
     [data-theme="light"] .k{background:#ffffff}
@@ -126,6 +126,17 @@
     .svgStroke{stroke:var(--text);stroke-width:2;fill:none;opacity:.92}
     .svgDim{stroke:var(--muted);stroke-width:1.6;fill:none;opacity:.85}
     .svgLabel{fill:var(--muted);font-size:11px;font-weight:800}
+
+    .diagramGrid{display:grid;grid-template-columns:1fr;gap:8px}
+    .diagramLegend{display:grid;gap:6px}
+    .legendRow{display:flex;align-items:baseline;justify-content:space-between;gap:10px;
+               border:1px solid var(--border);background:rgba(0,0,0,.14);padding:7px 8px;border-radius:12px}
+    [data-theme="light"] .legendRow{background:#ffffff}
+    .legendLeft{display:inline-flex;align-items:center;gap:8px;min-width:0}
+    .varBadge{width:22px;height:22;border-radius:8px;display:grid;place-items:center;
+              font-weight:900;border:1px solid rgba(var(--accent-rgb),.45);background:rgba(var(--accent-rgb),.14)}
+    .varName{font-size:12px;color:var(--muted);font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .varVal{font-size:12px;color:var(--text);font-weight:900}
 
     /* Modal */
     .overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:flex-end;justify-content:center;padding:18px;z-index:50}
@@ -152,7 +163,7 @@
       <div class="brand">
         <div class="logo" aria-hidden="true"><span>MC</span></div>
         <div class="title">
-          <h1>Mezclas de Concreto <span class="pill">v0.02</span></h1>
+          <h1>Mezclas de Concreto <span class="pill">v0.03</span></h1>
           <div class="sub">Dosifica por recipiente real (balde/caneca). Cemento por <b>bulto</b>.</div>
         </div>
       </div>
@@ -230,28 +241,45 @@
           <div class="diagramCard" id="diagramCard">
             <div class="diagramTitle">
               <span>Guía visual</span>
-              <span class="mono" id="diagHint">D mayor / D menor / h</span>
+              <span class="mono" id="diagHint">a / b / c</span>
             </div>
 
-            <svg id="bucketSvg" viewBox="0 0 220 160" role="img" aria-label="Diagrama del recipiente">
-              <defs>
-                <marker id="arrow" markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto">
-                  <path d="M0,0 L6,3 L0,6" fill="none" stroke="currentColor" stroke-width="1.6" />
-                </marker>
-              </defs>
+            <div class="diagramGrid">
+              <svg id="bucketSvg" viewBox="0 0 220 160" role="img" aria-label="Diagrama del recipiente">
+                <defs>
+                  <marker id="arrow" markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto">
+                    <path d="M0,0 L6,3 L0,6" fill="none" stroke="currentColor" stroke-width="1.6" />
+                  </marker>
+                </defs>
 
-              <!-- Shape -->
-              <path id="shapePath" class="svgStroke" d="" />
+                <!-- Shape -->
+                <path id="shapePath" class="svgStroke" d="" />
 
-              <!-- Dimensions -->
-              <path id="dimTop" class="svgDim" d="" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
-              <path id="dimBottom" class="svgDim" d="" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
-              <path id="dimH" class="svgDim" d="" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
+                <!-- Dimensions (letras) -->
+                <path id="dimTop" class="svgDim" d="" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
+                <path id="dimBottom" class="svgDim" d="" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
+                <path id="dimH" class="svgDim" d="" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
 
-              <text id="labTop" class="svgLabel" x="110" y="24" text-anchor="middle">D mayor</text>
-              <text id="labBottom" class="svgLabel" x="110" y="148" text-anchor="middle">D menor</text>
-              <text id="labH" class="svgLabel" x="196" y="86" text-anchor="middle">h</text>
-            </svg>
+                <text class="svgLabel" x="110" y="24" text-anchor="middle">a</text>
+                <text id="labB" class="svgLabel" x="110" y="148" text-anchor="middle">b</text>
+                <text class="svgLabel" x="196" y="86" text-anchor="middle">c</text>
+              </svg>
+
+              <div class="diagramLegend" aria-label="Valores de a, b y c">
+                <div class="legendRow" id="rowA">
+                  <div class="legendLeft"><div class="varBadge">a</div><div class="varName" id="diagAName">Diámetro mayor</div></div>
+                  <div class="varVal mono" id="diagAVal">—</div>
+                </div>
+                <div class="legendRow" id="rowB">
+                  <div class="legendLeft"><div class="varBadge">b</div><div class="varName" id="diagBName">Diámetro menor</div></div>
+                  <div class="varVal mono" id="diagBVal">—</div>
+                </div>
+                <div class="legendRow" id="rowC">
+                  <div class="legendLeft"><div class="varBadge">c</div><div class="varName" id="diagCName">Altura útil</div></div>
+                  <div class="varVal mono" id="diagCVal">—</div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -290,6 +318,11 @@
         </div>
 
         <div class="kpi">
+          <div class="k">
+            <div class="t">Cemento</div>
+            <div class="v" id="outCement">—</div>
+            <div class="s" id="outCement2"></div>
+          </div>
           <div class="k">
             <div class="t">Arena</div>
             <div class="v" id="outSand">—</div>
@@ -429,10 +462,16 @@ function updateDiagram() {
   const dimTop = $("dimTop");
   const dimBottom = $("dimBottom");
   const dimH = $("dimH");
-  const labTop = $("labTop");
-  const labBottom = $("labBottom");
-  const labH = $("labH");
   const hint = $("diagHint");
+
+  const labB = $("labB");
+  const rowB = $("rowB");
+  const diagAName = $("diagAName");
+  const diagBName = $("diagBName");
+  const diagCName = $("diagCName");
+  const diagAVal = $("diagAVal");
+  const diagBVal = $("diagBVal");
+  const diagCVal = $("diagCVal");
 
   // viewport layout constants
   const cx = 110;
@@ -458,22 +497,27 @@ function updateDiagram() {
 
     path.setAttribute("d", `M ${x1} ${topY} L ${x2} ${topY} L ${x4} ${botY} L ${x3} ${botY} Z`);
 
-    // top dim line
+    // top dim line (a)
     const dtY = 28;
     dimTop.setAttribute("d", `M ${x1} ${dtY} L ${x2} ${dtY}`);
-    // bottom dim
+    // bottom dim (b)
     const dbY = 146;
     dimBottom.setAttribute("d", `M ${x3} ${dbY} L ${x4} ${dbY}`);
-    // height dim right side
+    // height dim right side (c)
     const dhX = 196;
     dimH.setAttribute("d", `M ${dhX} ${topY} L ${dhX} ${botY}`);
 
-    labTop.textContent = `D mayor${isFinite(d1) ? " = " + fmt(d1,1) + " cm" : ""}`;
-    labBottom.textContent = `D menor${isFinite(d2) ? " = " + fmt(d2,1) + " cm" : ""}`;
-    labH.textContent = `h${isFinite(h) ? " = " + fmt(h,1) + " cm" : ""}`;
-    hint.textContent = "D mayor / D menor / h";
+    // legend
+    diagAName.textContent = "Diámetro mayor";
+    diagBName.textContent = "Diámetro menor";
+    diagCName.textContent = "Altura útil";
+    diagAVal.textContent = isFinite(d1) ? `${fmt(d1,1)} cm` : "—";
+    diagBVal.textContent = isFinite(d2) ? `${fmt(d2,1)} cm` : "—";
+    diagCVal.textContent = isFinite(h)  ? `${fmt(h,1)} cm`  : "—";
+    hint.textContent = "a / b / c";
 
-    labBottom.style.display = "";
+    if (labB) labB.style.display = "";
+    if (rowB) rowB.style.display = "";
   } else {
     const d = parseNumberAny($("dc").value);
     const h = parseNumberAny($("hc").value);
@@ -495,15 +539,20 @@ function updateDiagram() {
 
     const dtY = 28;
     dimTop.setAttribute("d", `M ${x1} ${dtY} L ${x2} ${dtY}`);
-    dimBottom.setAttribute("d", `M ${x1} 146 L ${x2} 146`);
+    // no mostramos "b" en cilindro
+    dimBottom.setAttribute("d", `M 0 0 L 0 0`);
     const dhX = 196;
     dimH.setAttribute("d", `M ${dhX} ${topY} L ${dhX} ${botY}`);
 
-    labTop.textContent = `D${isFinite(d) ? " = " + fmt(d,1) + " cm" : ""}`;
-    labH.textContent = `h${isFinite(h) ? " = " + fmt(h,1) + " cm" : ""}`;
-    hint.textContent = "D / h";
+    // legend
+    diagAName.textContent = "Diámetro";
+    diagCName.textContent = "Altura útil";
+    diagAVal.textContent = isFinite(d) ? `${fmt(d,1)} cm` : "—";
+    diagCVal.textContent = isFinite(h) ? `${fmt(h,1)} cm` : "—";
+    hint.textContent = "a / c";
 
-    labBottom.style.display = "none";
+    if (labB) labB.style.display = "none";
+    if (rowB) rowB.style.display = "none";
   }
 }
 
@@ -625,7 +674,7 @@ function syncDimsUI() {
   const shape = $("shape").value;
   $("dimsFrustum").style.display = (shape==="frustum") ? "" : "none";
   $("dimsCylinder").style.display = (shape==="cylinder") ? "" : "none";
-  $("diagHint").textContent = (shape==="frustum") ? "D mayor / D menor / h" : "D / h";
+  $("diagHint").textContent = (shape==="frustum") ? "a / b / c" : "a / c";
 }
 
 function persist() {
@@ -720,10 +769,17 @@ function calc() {
   $("outWater").textContent = `${fmt(water_L,1)} L`;
   $("outWater2").textContent = `≈ ${fmt(water_b_r,2)} baldes (exacto ${fmt(water_b,2)})`;
 
+  // Cemento SIEMPRE en bultos (y adicionalmente en kg)
   const bultosEq = cement_kg / bagKg;
+  const bultosDisp = isFinite(bultosEq) ? Math.round(bultosEq * 100) / 100 : NaN; // 0.01 bulto
+  const bultoWord = (Math.abs(bultosDisp - 1) < 1e-9) ? "bulto" : "bultos";
+
+  $("outCement").textContent = `${fmt(bultosDisp,2)} ${bultoWord}`;
+  $("outCement2").textContent = `Exacto: ${fmt(bultosEq,2)} • ${fmt(cement_kg,1)} kg`;
+
   const cementLine = (active === "bag")
-    ? `Cemento: ${fmt(bagKg,0)} kg (1 bulto)`
-    : `Cemento: ${fmt(cement_kg,1)} kg (≈ ${fmt(bultosEq,2)} bultos de ${fmt(bagKg,0)} kg)`;
+    ? `Cemento: 1 bulto de ${fmt(bagKg,0)} kg (${fmt(bagKg,0)} kg)`
+    : `Cemento: ≈ ${fmt(bultosDisp,2)} bultos de ${fmt(bagKg,0)} kg (${fmt(cement_kg,1)} kg)`;
 
   const meta = [
     header,

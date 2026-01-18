@@ -1,6 +1,6 @@
 // sw.js
 // Incrementa la versión en cada deploy para invalidar caché
-const CACHE_VERSION = "mc-v0.02";
+const CACHE_VERSION = "mc-v0.03";
 const CACHE = `mc-cache-${CACHE_VERSION}`;
 
 const ASSETS = [
