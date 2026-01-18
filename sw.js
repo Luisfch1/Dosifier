@@ -1,7 +1,7 @@
 // sw.js
 // Incrementa la versión en cada deploy para invalidar caché
-const CACHE_VERSION = "mc-v0.03";
-const CACHE = `mc-cache-${CACHE_VERSION}`;
+const CACHE_VERSION = "lm-v0.03.1";
+const CACHE = `lm-cache-${CACHE_VERSION}`;
 
 const ASSETS = [
   "./",
@@ -27,7 +27,7 @@ self.addEventListener("install", (event) => {
 self.addEventListener("activate", (event) => {
   event.waitUntil((async () => {
     const keys = await caches.keys();
-    await Promise.all(keys.map((k) => (k.startsWith("mc-cache-") && k !== CACHE) ? caches.delete(k) : null));
+    await Promise.all(keys.map((k) => (((k.startsWith("mc-cache-") || k.startsWith("lm-cache-")) && k !== CACHE)) ? caches.delete(k) : null));
     self.clients.claim();
   })());
 });

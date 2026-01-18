@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <title>Mezclas de Concreto v0.03</title>
+  <title>Logi Mix v0.03.1</title>
 
   <link rel="manifest" href="./manifest.webmanifest">
   <link rel="icon" href="./favicon.png">
@@ -79,6 +79,20 @@
     [data-theme="light"] .card{background:rgba(255,255,255,.85)}
 
     h2{font-size:14px;margin:0 0 10px 0;color:var(--text)}
+
+    /* Jerarquía: ingreso vs resultados */
+    .card.inputCard{border-top:3px solid rgba(var(--accent-rgb),.85);}
+    .card.resultCard{border-top:3px solid rgba(239,68,68,.80);}
+
+    .sectionHead{display:flex;align-items:flex-start;gap:10px;margin:0 0 12px 0;}
+    .sectionBadge{width:34px;height:34px;border-radius:14px;display:grid;place-items:center;
+      font-weight:1000;color:var(--text);
+      background:rgba(var(--accent-rgb),.20);border:1px solid rgba(var(--accent-rgb),.45);
+      box-shadow:0 6px 18px rgba(0,0,0,.20);}
+    .resultCard .sectionBadge{background:rgba(239,68,68,.16);border-color:rgba(239,68,68,.45);}
+    .sectionTitle{font-size:15px;font-weight:1000;margin:0;line-height:1.1;}
+    .sectionSub{font-size:12px;color:var(--muted);margin-top:3px;line-height:1.25;}
+
     .muted{color:var(--muted)}
     label{font-size:12px;color:var(--muted);display:block;margin:10px 0 6px}
     input, select{
@@ -124,7 +138,7 @@
     .diagramTitle span{font-size:12px;color:var(--muted);font-weight:800}
     svg{width:100%;height:auto;display:block}
     .svgStroke{stroke:var(--text);stroke-width:2;fill:none;opacity:.92}
-    .svgDim{stroke:var(--muted);stroke-width:1.6;fill:none;opacity:.85}
+    .svgDim{stroke:var(--muted);stroke-width:1.2;fill:none;opacity:.85;stroke-linecap:round}
     .svgLabel{fill:var(--muted);font-size:11px;font-weight:800}
 
     .diagramGrid{display:grid;grid-template-columns:1fr;gap:8px}
@@ -161,9 +175,9 @@
   <div class="wrap">
     <div class="topbar">
       <div class="brand">
-        <div class="logo" aria-hidden="true"><span>MC</span></div>
+        <div class="logo" aria-hidden="true"><span>LM</span></div>
         <div class="title">
-          <h1>Mezclas de Concreto <span class="pill">v0.03</span></h1>
+          <h1>Logi Mix <span class="pill">v0.03.1</span></h1>
           <div class="sub">Dosifica por recipiente real (balde/caneca). Cemento por <b>bulto</b>.</div>
         </div>
       </div>
@@ -175,8 +189,14 @@
     </div>
 
     <div class="grid">
-      <div class="card">
-        <h2>1) Configuración</h2>
+      <div class="card inputCard">
+        <div class="sectionHead">
+          <div class="sectionBadge">1</div>
+          <div>
+            <div class="sectionTitle">Ingreso de datos</div>
+            <div class="sectionSub">Configura resistencia, recipiente y medidas reales.</div>
+          </div>
+        </div>
 
         <div class="row">
           <div>
@@ -247,8 +267,8 @@
             <div class="diagramGrid">
               <svg id="bucketSvg" viewBox="0 0 220 160" role="img" aria-label="Diagrama del recipiente">
                 <defs>
-                  <marker id="arrow" markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto">
-                    <path d="M0,0 L6,3 L0,6" fill="none" stroke="currentColor" stroke-width="1.6" />
+                  <marker id="slash" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="0">
+                    <path d="M2,6 L6,2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
                   </marker>
                 </defs>
 
@@ -256,13 +276,13 @@
                 <path id="shapePath" class="svgStroke" d="" />
 
                 <!-- Dimensions (letras) -->
-                <path id="dimTop" class="svgDim" d="" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
-                <path id="dimBottom" class="svgDim" d="" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
-                <path id="dimH" class="svgDim" d="" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
+                <path id="dimTop" class="svgDim" d="" marker-start="url(#slash)" marker-end="url(#slash)"/>
+                <path id="dimBottom" class="svgDim" d="" marker-start="url(#slash)" marker-end="url(#slash)"/>
+                <path id="dimH" class="svgDim" d="" marker-start="url(#slash)" marker-end="url(#slash)"/>
 
                 <text class="svgLabel" x="110" y="24" text-anchor="middle">a</text>
-                <text id="labB" class="svgLabel" x="110" y="148" text-anchor="middle">b</text>
-                <text class="svgLabel" x="196" y="86" text-anchor="middle">c</text>
+                <text id="labB" class="svgLabel" x="110" y="140" text-anchor="middle">b</text>
+                <text id="labC" class="svgLabel" x="206" y="86" text-anchor="start">c</text>
               </svg>
 
               <div class="diagramLegend" aria-label="Valores de a, b y c">
@@ -296,8 +316,14 @@
         </details>
       </div>
 
-      <div class="card">
-        <h2>2) Resultado</h2>
+      <div class="card resultCard">
+        <div class="sectionHead">
+          <div class="sectionBadge">2</div>
+          <div>
+            <div class="sectionTitle">Resultados</div>
+            <div class="sectionSub">Dosificación calculada según tu recipiente.</div>
+          </div>
+        </div>
 
         <div class="tabs" role="tablist" aria-label="Modo de dosificación">
           <div class="tab active" id="tabBag" role="tab" aria-selected="true" tabindex="0">Por 1 bulto (50 kg)</div>
@@ -370,9 +396,12 @@
 
 <script>
 const DATA_URL = "./mezclas_argos_v0.02.json";
-const THEME_KEY = "mc_theme";
-const STATE_KEY = "mc_state_v002";
-const TAB_KEY = "mc_result_tab";
+const THEME_KEY = "lm_theme";
+const LEGACY_THEME_KEY = "mc_theme";
+const STATE_KEY = "lm_state_v003";
+const LEGACY_STATE_KEY = "mc_state_v002";
+const TAB_KEY = "lm_result_tab";
+const LEGACY_TAB_KEY = "mc_result_tab";
 
 /* ---------- PWA: Service Worker ---------- */
 if ("serviceWorker" in navigator) {
@@ -430,6 +459,11 @@ function syncThemeUI() {
   }
 }
 function initTheme() {
+  // Migración suave: si vienes de versiones antiguas, conserva el tema
+  const legacy = localStorage.getItem(LEGACY_THEME_KEY);
+  if (!localStorage.getItem(THEME_KEY) && legacy) {
+    localStorage.setItem(THEME_KEY, legacy);
+  }
   const saved = localStorage.getItem(THEME_KEY) || "dark";
   applyTheme(saved);
   syncThemeUI();
@@ -465,6 +499,7 @@ function updateDiagram() {
   const hint = $("diagHint");
 
   const labB = $("labB");
+  const labC = $("labC");
   const rowB = $("rowB");
   const diagAName = $("diagAName");
   const diagBName = $("diagBName");
@@ -507,6 +542,18 @@ function updateDiagram() {
     const dhX = 196;
     dimH.setAttribute("d", `M ${dhX} ${topY} L ${dhX} ${botY}`);
 
+    // labels (evitar tachado por la cota)
+    if (labB) {
+      labB.setAttribute("x", String((x3 + x4) / 2));
+      labB.setAttribute("y", String(dbY - 6));
+      labB.setAttribute("text-anchor", "middle");
+    }
+    if (labC) {
+      labC.setAttribute("x", String(dhX + 10));
+      labC.setAttribute("y", String((topY + botY) / 2 + 4));
+      labC.setAttribute("text-anchor", "start");
+    }
+
     // legend
     diagAName.textContent = "Diámetro mayor";
     diagBName.textContent = "Diámetro menor";
@@ -543,6 +590,13 @@ function updateDiagram() {
     dimBottom.setAttribute("d", `M 0 0 L 0 0`);
     const dhX = 196;
     dimH.setAttribute("d", `M ${dhX} ${topY} L ${dhX} ${botY}`);
+
+    // label c (a la derecha de la cota vertical)
+    if (labC) {
+      labC.setAttribute("x", String(dhX + 10));
+      labC.setAttribute("y", String((topY + botY) / 2 + 4));
+      labC.setAttribute("text-anchor", "start");
+    }
 
     // legend
     diagAName.textContent = "Diámetro";
@@ -592,15 +646,19 @@ async function init() {
     opt.textContent = `${m.psi} psi (${m.mpa} MPa)${tag}`;
     psiSel.appendChild(opt);
   }
+  // Migración suave desde llaves antiguas
+  if (!localStorage.getItem(STATE_KEY) && localStorage.getItem(LEGACY_STATE_KEY)) {
+    try { localStorage.setItem(STATE_KEY, localStorage.getItem(LEGACY_STATE_KEY)); } catch {}
+  }
 
-  const st = loadJSON(STATE_KEY, {});
+  const st = loadJSON(STATE_KEY, loadJSON(LEGACY_STATE_KEY, {}));
   if (st.psi) psiSel.value = st.psi;
   if (st.shape) $("shape").value = st.shape;
   ["d1","d2","h","dc","hc","bagKg","rounding","volM3","volExpr"].forEach(id => {
     if (st[id] !== undefined && $(id)) $(id).value = st[id];
   });
 
-  const tab = localStorage.getItem(TAB_KEY) || "bag";
+  const tab = localStorage.getItem(TAB_KEY) || localStorage.getItem(LEGACY_TAB_KEY) || "bag";
   setActiveTab(tab);
 
   // Settings modal

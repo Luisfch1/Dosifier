@@ -1,12 +1,12 @@
 {
-  "name": "Mezclas de Concreto",
-  "short_name": "Mezclas",
+  "name": "Logi Mix",
+  "short_name": "Logi Mix",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
   "background_color": "#0b1220",
   "theme_color": "#0b1220",
-  "description": "Dosificación por bulto (50 kg) usando baldes/canecas medidos por el usuario. Base: tablas referenciales de Cementos Argos.",
+  "description": "Dosificación por bulto (50 kg) usando baldes/canecas medidos por el usuario. Base: tablas referenciales de Cementos Argos. (Logi Mix)",
   "icons": [
     {
       "src": "./icon-192.png",
